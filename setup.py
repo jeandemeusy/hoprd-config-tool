@@ -6,7 +6,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="hoprd-config-tool",
-    version="0.1.0",
+    version="0.1.1",
     scripts=["bin/hoprd-config-tool"],
     author="Jean Demeusy",
     author_email="jean.demeusy@hoprnet.org",
@@ -14,7 +14,7 @@ setuptools.setup(
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/jeandemeusy/hoprd-config-tool",
-    packages=["hoprd-config-tool"],
+    packages=setuptools.find_packages(),
     classifiers=[
         "Development Status :: 4 - Beta",
         "Intended Audience :: Developers",
@@ -22,5 +22,5 @@ setuptools.setup(
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
     ],
-    install_requires=["pyYAML", "Jinja2", "pycurl"]
+    install_requires=["pyYAML", "Jinja2", "pycurl", "click"]
 )
