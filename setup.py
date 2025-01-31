@@ -6,7 +6,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="hoprd-config-tool",
-    version="0.1.1",
+    version="0.1.2",
     scripts=["bin/hoprd-config-tool"],
     author="Jean Demeusy",
     author_email="jean.demeusy@hoprnet.org",
