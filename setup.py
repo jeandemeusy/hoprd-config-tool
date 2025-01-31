@@ -6,7 +6,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="hoprd-config-tool",
-    version="0.1.2",
+    version="0.1.3",
     scripts=["bin/hoprd-config-tool"],
     author="Jean Demeusy",
     author_email="jean.demeusy@hoprnet.org",
@@ -14,7 +14,7 @@ setuptools.setup(
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/jeandemeusy/hoprd-config-tool",
-    packages=setuptools.find_packages(),
+    packages=["hoprd-config-tool", "hoprd-config-tool/yaml", "hoprd-config-tool/templates"],
     classifiers=[
         "Development Status :: 4 - Beta",
         "Intended Audience :: Developers",

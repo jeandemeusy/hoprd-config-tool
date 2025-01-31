@@ -1,23 +1,23 @@
-import click
-import subprocess
-import yaml
 import logging
-
+import subprocess
 from pathlib import Path
 
+import click
+import yaml
+
+from .config_filling import ConfigFilling
+from .library import get_template, replace_fields
 from .network import Network
 from .params import NodeParams
-from .library import get_template, replace_fields
-from .yaml import IPv4, Token, Aggregating, AutoFunding, AutoRedeeming, ClosureFinalizer
-from .config_filling import ConfigFilling
+from .yaml import Aggregating, AutoFunding, AutoRedeeming, ClosureFinalizer, IPv4, Token
 
 logging.basicConfig(level=logging.DEBUG, format="%(levelname)-8s:%(message)s", datefmt="[%X]")
 logger = logging.getLogger("hoprd-config-generator")
 
 @click.command()
 @click.option("--params", "params_file", type=click.Path(path_type=Path))
-@click.option("--folder", "base_folder", default=Path(".hoprd-nodes"), type=click.Path(path_type=Path))
-@click.option("--output", default=Path("docker-compose.yml"), type=click.Path(path_type=Path),)
+@click.option("--folder", "base_folder", default=Path("./.hoprd-nodes"), type=click.Path(path_type=Path))
+@click.option("--output", default=Path("./docker-compose.yml"), type=click.Path(path_type=Path),)
 def main(params_file: str, base_folder: Path, output: Path):
     for cls in [IPv4, Token, Aggregating, AutoFunding, AutoRedeeming, ClosureFinalizer]:
         yaml.SafeLoader.add_constructor(cls.yaml_tag, cls.from_yaml)
