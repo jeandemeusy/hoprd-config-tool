@@ -1,11 +1,13 @@
+import collections.abc
+import os
 from copy import deepcopy
 from importlib import resources
 from pathlib import Path
 from typing import Any
 
-from . import templates
-import collections.abc
 from jinja2 import Template
+
+from . import templates
 
 
 def convert(value: Any):
@@ -29,16 +31,17 @@ def convert(value: Any):
         pass
 
     return value
-    
-def get_template(filename: Path):
-    full_path: Path = resources.files(templates) / filename
 
+
+def get_template(filename: Path):
     if filename.suffix in [".yaml", ".yml"]:
-        return full_path
+        return resources.files(templates) / filename
     elif filename.suffix in [".j2"]:
-        with open(full_path) as file_:
-            template = Template(file_.read(), trim_blocks=True, lstrip_blocks=True)
-        return template
+        this_file = os.path.abspath(__file__)
+        this_dir = os.path.dirname(this_file)
+        template_path = os.path.join(this_dir, filename)
+        with open(template_path) as f:
+            return Template(f.read(), trim_blocks=True, lstrip_blocks=True)
     else:
         return filename
 

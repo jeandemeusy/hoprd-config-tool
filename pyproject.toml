@@ -7,9 +7,9 @@ packages = ["/hoprd-config-tool"]
 
 [project]
 name = "hoprd-config-tool"
-version = "0.1.4"
+version = "0.1.5"
 requires-python = ">=3.9"
-dependencies = ["pyYAML", "Jinja2", "pycurl", "click"]
+dependencies = ["pyYAML", "Jinja2", "click"]
 readme = {file = "README.md", content-type = "text/markdown" }
 authors = [{name = "Jean Demeusy", email = "jean.demeusy@hoprnet.org"}]
 maintainers = [{name = "Jean Demeusy", email = "jean.demeusy@hoprnet.org"}]

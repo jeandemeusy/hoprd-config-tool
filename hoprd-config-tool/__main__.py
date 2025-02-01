@@ -74,7 +74,7 @@ def main(params_file: str, base_folder: Path, output: Path):
     logger.info("Generating docker-compose file")
     with open(output, "w") as f:
         f.write(
-            get_template(Path("docker-compose.yml.j2")).render(
+            get_template(Path("./templates/docker-compose.yml.j2")).render(
                 services=[p.as_dict for p in nodes_params], 
                 versions={n.name: n.version for n in networks},
                 envvars=config_content.get("env", {})
