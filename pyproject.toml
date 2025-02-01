@@ -7,7 +7,7 @@ packages = ["/hoprd-config-tool"]
 
 [project]
 name = "hoprd-config-tool"
-version = "0.1.5"
+version = "0.1.6"
 requires-python = ">=3.9"
 dependencies = ["pyYAML", "Jinja2", "click"]
 readme = {file = "README.md", content-type = "text/markdown" }
