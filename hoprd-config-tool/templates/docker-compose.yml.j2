@@ -55,7 +55,7 @@ services:
 
   {% endfor %}
   {% for service in services %}
-  {% if service.network.name == 'rotsee' and service.network.slug != none %}
+  {% if service.network.slug != none %}
   metricspusher-{{ service.network.name }}-{{ service.index }}:
     <<: *settings-metricspusher
     network_mode: service:hoprd-{{ service.network.name }}-{{ service.index }}
@@ -65,6 +65,7 @@ services:
       HOPRD_NODE_NAME: hoprd-{{ service.network.name }}-{{ service.index }}
       HOPRD_JOB_NAME: {{ service.network.slug }}{{ service.index }}
       HOPRD_API_PORT: {{ service.api_port }}
+      HOPRD_NETWORK: {{ service.network.name }}
 
   {% endif %}
   {% endfor %}
