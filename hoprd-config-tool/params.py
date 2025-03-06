@@ -1,5 +1,6 @@
 from .baseobject import BaseObject
 
+
 class NodeParams(BaseObject):
     keys = {
         "index": "index",
@@ -54,4 +55,3 @@ class NodeParams(BaseObject):
     @property
     def id_file(self):
         return self.id_folder.joinpath(f"{self.filename}.id")
-

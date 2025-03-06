@@ -31,7 +31,8 @@ def convert(value: Any):
 
 
 def get_template(filename: Path, template_folder: str = "templates"):
-    template_path =  Path(__file__).absolute().parent.joinpath(template_folder, filename)
+    template_path = Path(__file__).absolute(
+    ).parent.joinpath(template_folder, filename)
 
     if filename.suffix in [".yaml", ".yml"]:
         with open(template_path, "r") as f:
@@ -40,7 +41,7 @@ def get_template(filename: Path, template_folder: str = "templates"):
     elif filename.suffix in [".j2"]:
         with open(template_path, "r") as f:
             return Template(f.read(), trim_blocks=True, lstrip_blocks=True)
-            
+
     else:
         return filename
 

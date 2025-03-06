@@ -11,8 +11,10 @@ from .network import Network
 from .params import NodeParams
 from .yaml import Aggregating, AutoFunding, AutoRedeeming, ClosureFinalizer, IPv4, Token
 
-logging.basicConfig(level=logging.DEBUG, format="%(levelname)-8s:%(message)s", datefmt="[%X]")
+logging.basicConfig(level=logging.DEBUG,
+                    format="%(levelname)-8s:%(message)s", datefmt="[%X]")
 logger = logging.getLogger("hoprd-config-generator")
+
 
 @click.command()
 @click.option("--params", "params_file", type=click.Path(path_type=Path))
@@ -26,16 +28,19 @@ def main(params_file: str, base_folder: Path, output: Path):
     node_template = get_template(Path("node.yaml"))
     logger.info(f"Successfuly read node config file template")
 
-    ip_addr = subprocess.check_output("curl -s https://ipinfo.io/ip", shell=True).decode()
+    ip_addr = subprocess.check_output(
+        "curl -s https://ipinfo.io/ip", shell=True).decode()
     logger.info(f"Retrieved machine IP as '{ip_addr}'")
 
     with open(params_file, "r") as f:
         config_content = yaml.safe_load(f)
 
-    networks = [Network(value, name=key) for key, value in config_content.items() if key != "env"]
+    networks = [Network(value, name=key)
+                for key, value in config_content.items() if key != "env"]
 
     for network in networks:
-        logger.info(f"Loaded {len(network.nodes)} nodes for '{network.name}' network")
+        logger.info(
+            f"Loaded {len(network.nodes)} nodes for '{network.name}' network")
 
     # Create list of nodes
     nodes_params = list[NodeParams]()
@@ -48,7 +53,6 @@ def main(params_file: str, base_folder: Path, output: Path):
             }
             node_param = NodeParams(params | node.as_dict)
             nodes_params.append(node_param)
-
 
     # Generate config files
     logger.info("Generating config files")
@@ -74,7 +78,7 @@ def main(params_file: str, base_folder: Path, output: Path):
     with open(output, "w") as f:
         f.write(
             get_template(Path("docker-compose.yml.j2")).render(
-                services=[p.as_dict for p in nodes_params], 
+                services=[p.as_dict for p in nodes_params],
                 versions={n.name: n.version for n in networks},
                 envvars=config_content.get("env", {})
             )

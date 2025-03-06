@@ -1,5 +1,7 @@
 from typing import Any
-from .library import set_nested_value, set_nested_attr, get_nested_value
+
+from .library import get_nested_value, set_nested_attr, set_nested_value
+
 
 class ConfigFilling:
     keys = {

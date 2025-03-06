@@ -1,5 +1,6 @@
-from .node import Node
 from .baseobject import BaseObject
+from .node import Node
+
 
 class Network(BaseObject):
     keys = {

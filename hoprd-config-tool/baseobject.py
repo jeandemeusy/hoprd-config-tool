@@ -1,5 +1,6 @@
 from .library import convert
 
+
 class BaseObject:
     def __init__(self, data: dict, **kwargs):
         for key, value in self.keys.items():
@@ -12,7 +13,7 @@ class BaseObject:
                 setattr(self, key, convert(v))
             except:
                 pass
-        
+
         for key, value in kwargs.items():
             setattr(self, key, value)
 
