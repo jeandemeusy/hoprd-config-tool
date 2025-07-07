@@ -32,7 +32,7 @@ x-envars: &envvars
 
 services:
   {% for service in services %}
-  hoprd-{{ service.index }}:
+  hoprd-{{ service.network.meta.name }}-{{ service.index }}:
     <<: *settings
     container_name: hoprd-{{ service.network.meta.name }}-{{ service.index }}
     environment:
