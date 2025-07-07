@@ -17,17 +17,6 @@ x-settings-{{network}}: &settings
       max-size: 1000M
       max-file: "5"
 
-{% for service in services %}
-{% if service.network.slug != none %}
-x-settings-metricspusher: &settings-metricspusher
-  image: curlimages/curl:latest
-  command: /bin/sh /app/metricspusher.sh
-  volumes:
-    - ./metricspusher.sh:/app/metricspusher.sh
-{% break %}
-{% endif %}
-{% endfor %}
-
 x-envars: &envvars
   RUST_BACKTRACE: full
   HOPRD_CONFIGURATION_FILE_PATH: /app/hoprd.cfg.yaml
@@ -58,7 +47,10 @@ services:
   {% for service in services %}
   {% if service.network.slug != none %}
   metricspusher-{{ service.network.meta.name }}-{{ service.index }}:
-    <<: *settings-metricspusher
+    image: curlimages/curl:latest
+    command: /bin/sh /app/metricspusher.sh
+    volumes:
+      - ./metricspusher.sh:/app/metricspusher.sh
     network_mode: service:hoprd-{{ service.network.meta.name }}-{{ service.index }}
     container_name: metricspusher-{{ service.network.meta.name }}-{{ service.index }}
     environment:
