@@ -18,33 +18,33 @@ class NodeParams(BaseObject):
 
     @property
     def network_name(self):
-        return self.network.name
+        return self.network.meta.name
 
     @property
     def api_port(self):
-        return self.network.api_port_base + self.index
+        return self.network.meta.api_port_base + self.index
 
     @property
     def network_port(self):
-        return self.network.network_port_base + self.index
+        return self.network.meta.network_port_base + self.index
 
     @property
     def session_port(self):
-        return self.network.session_port_base + self.index
+        return self.network.meta.session_port_base + self.index
 
     @property
     def filename(self):
-        return f"hoprd-{self.network.name}-{self.index}"
+        return f"hoprd-{self.network_name}-{self.index}"
 
     @property
     def config_folder(self):
-        folder = self.folder.joinpath(".hopr-configs", self.network.name)
+        folder = self.folder.joinpath(".hopr-configs", self.network_name)
         folder.mkdir(parents=True, exist_ok=True)
         return folder
 
     @property
     def id_folder(self):
-        folder = self.folder.joinpath(".hopr-ids", self.network.name)
+        folder = self.folder.joinpath(".hopr-ids", self.network_name)
         folder.mkdir(parents=True, exist_ok=True)
         return folder
 

@@ -1,0 +1,36 @@
+meta:
+  version: 1.0.0
+  name: network1
+  api_port_base: 3000
+  network_port_base: 9090
+  session_port_base: 10000
+
+nodes:
+  - safe_address: SAFE_ADDRESS_1
+    module_address: MODULE_ADDRESS_1
+    node_address: NODE_ADDRESS_1
+    node_peer_id: NODE_PEER_ID_1
+    api_password: API_PASSWORD_1
+    identity_password: ID_PASSWORD_1
+    identity: IDENTITY_CONTENT_1
+  - safe_address: SAFE_ADDRESS_2
+    module_address: MODULE_ADDRESS_2
+    node_address: NODE_ADDRESS_2
+    node_peer_id: NODE_PEER_ID_2
+    api_password: API_PASSWORD_2
+    identity_password: ID_PASSWORD_2
+    identity: IDENTITY_CONTENT_2
+
+config:
+  hopr:
+    protocol:
+      outgoing_ticket_price: "100 HOPR"
+    strategy:
+      strategies:
+        - !Aggregating
+          aggregation_threshold: 100
+          unrealized_balance_ratio: 0.95
+          aggregate_on_channel_close: true
+          
+env:
+  RUST_LOG: info
