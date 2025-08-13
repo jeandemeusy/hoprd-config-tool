@@ -76,6 +76,7 @@ def main(params_file: str, base_folder: Path):
             get_template(Path("docker-compose.yml.j2")).render(
                 services=[p.as_dict for p in nodes_params],
                 version=network.meta.version,
+                network=network.meta.name,
                 envvars=config_content.get("env", {})
             )
         )

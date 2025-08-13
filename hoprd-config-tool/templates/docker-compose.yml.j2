@@ -1,4 +1,4 @@
-name: {{ service.network.meta.name }}
+name: {{ network }}
 
 x-settings: &settings
   image: europe-west3-docker.pkg.dev/hoprassociation/docker-images/hoprd:{{ version|default("latest", true) }}
@@ -28,16 +28,16 @@ x-envars: &envvars
 
 services:
   {% for service in services %}
-  hoprd-{{ service.network.meta.name }}-{{ service.index }}:
+  hoprd-{{ network }}-{{ service.index }}:
     <<: *settings
-    container_name: hoprd-{{ service.network.meta.name }}-{{ service.index }}
+    container_name: hoprd-{{ network }}-{{ service.index }}
     environment:
       HOPRD_API_PORT: {{ service.api_port }}
       <<: *envvars
     volumes:
-      - {{ service.folder }}/.hopr-configs/{{ service.network.meta.name }}/hoprd-{{ service.network.meta.name }}-{{ service.index }}.cfg.yaml:/app/hoprd.cfg.yaml
-      - {{ service.folder }}/.hopr-ids/{{ service.network.meta.name }}/hoprd-{{ service.network.meta.name }}-{{ service.index }}.id:/app/hopr.id
-      - {{ service.folder }}/.volumes/{{ service.network.meta.name }}/hoprd-{{ service.network.meta.name }}-{{ service.index }}:/app/hoprd-db
+      - {{ service.folder }}/.hopr-configs/{{ network }}/hoprd-{{ network }}-{{ service.index }}.cfg.yaml:/app/hoprd.cfg.yaml
+      - {{ service.folder }}/.hopr-ids/{{ network }}/hoprd-{{ network }}-{{ service.index }}.id:/app/hopr.id
+      - {{ service.folder }}/.volumes/{{ network }}/hoprd-{{ network }}-{{ service.index }}:/app/hoprd-db
     ports:
       - {{ service.session_port }}:{{ service.session_port }}/tcp
       - {{ service.session_port }}:{{ service.session_port }}/udp
@@ -48,19 +48,19 @@ services:
   {% endfor %}
   {% for service in services %}
   {% if service.network.slug != none %}
-  metricspusher-{{ service.network.meta.name }}-{{ service.index }}:
+  metricspusher-{{ network }}-{{ service.index }}:
     image: curlimages/curl:latest
     command: /bin/sh /app/metricspusher.sh
     volumes:
       - ./metricspusher.sh:/app/metricspusher.sh
-    network_mode: service:hoprd-{{ service.network.meta.name }}-{{ service.index }}
-    container_name: metricspusher-{{ service.network.meta.name }}-{{ service.index }}
+    network_mode: service:hoprd-{{ network }}-{{ service.index }}
+    container_name: metricspusher-{{ network }}-{{ service.index }}
     environment:
       HOPRD_API_TOKEN: {{ service.api_password }}
-      HOPRD_NODE_NAME: hoprd-{{ service.network.meta.name }}-{{ service.index }}
+      HOPRD_NODE_NAME: hoprd-{{ network }}-{{ service.index }}
       HOPRD_JOB_NAME: {{ service.network.slug }}{{ service.index }}
       HOPRD_API_PORT: {{ service.api_port }}
-      HOPRD_NETWORK: {{ service.network.meta.name }}
+      HOPRD_NETWORK: {{ network }}
 
   {% endif %}
   {% endfor %}
