@@ -1,3 +1,5 @@
+name: {{network}}
+
 x-settings-{{network}}: &settings
   image: europe-west3-docker.pkg.dev/hoprassociation/docker-images/hoprd:{{ version|default("latest", true) }}
   restart: unless-stopped
