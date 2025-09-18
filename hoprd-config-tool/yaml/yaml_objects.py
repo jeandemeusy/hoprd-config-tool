@@ -1,5 +1,6 @@
 from .parser import YAMLParser
 
+
 class IPv4(YAMLParser):
     scalar = True
     ipv4: str
@@ -19,7 +20,9 @@ class AutoFunding(YAMLParser):
 
 class AutoRedeeming(YAMLParser):
     redeem_only_aggregated: bool
+    redeem_all_on_close: bool
     minimum_redeem_ticket_value: str
+    redeem_on_winning: bool
 
 class ClosureFinalizer(YAMLParser):
     max_closure_overdue: int
