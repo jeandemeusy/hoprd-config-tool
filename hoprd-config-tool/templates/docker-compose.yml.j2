@@ -1,5 +1,10 @@
 name: {{ network }}
 
+volumes:
+  {% for service in services %}
+  hoprd-{{ network }}-{{ service.index }}
+  {% endfor %}
+
 x-settings: &settings
   image: europe-west3-docker.pkg.dev/hoprassociation/docker-images/hoprd:{{ version|default("latest", true) }}
   restart: unless-stopped
@@ -37,7 +42,7 @@ services:
     volumes:
       - {{ service.folder }}/.hopr-configs/{{ network }}/hoprd-{{ network }}-{{ service.index }}.cfg.yaml:/app/hoprd.cfg.yaml
       - {{ service.folder }}/.hopr-ids/{{ network }}/hoprd-{{ network }}-{{ service.index }}.id:/app/hopr.id
-      - {{ service.folder }}/.volumes/{{ network }}/hoprd-{{ network }}-{{ service.index }}:/app/hoprd-db
+      - hoprd-{{ network }}-{{ service.index }}:/app/hoprd-db
     ports:
       - {{ service.session_port }}:{{ service.session_port }}/tcp
       - {{ service.session_port }}:{{ service.session_port }}/udp
