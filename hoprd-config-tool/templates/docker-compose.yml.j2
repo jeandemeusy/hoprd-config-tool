@@ -2,7 +2,7 @@ name: {{ network }}
 
 volumes:
   {% for service in services %}
-  hoprd-{{ network }}-{{ service.index }}
+  hoprd-{{ network }}-{{ service.index }}:
   {% endfor %}
 
 x-settings: &settings
