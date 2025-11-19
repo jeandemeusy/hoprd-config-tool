@@ -1,3 +1,5 @@
+import re
+
 from .baseobject import BaseObject
 
 
@@ -13,7 +15,8 @@ class NodeParams(BaseObject):
         "safe_address": "safe_address",
         "identity": "identity",
         "identity_password": "identity_password",
-        "folder": "folder"
+        "folder": "folder",
+        "surname": "surname",
     }
 
     @property
@@ -34,7 +37,24 @@ class NodeParams(BaseObject):
 
     @property
     def filename(self):
-        return f"hoprd-{self.network_name}-{self.index}"
+        return f"hoprd-{self.network_name}-{self.node_suffix}"
+
+    @property
+    def node_suffix(self):
+        surname = getattr(self, "surname", None)
+        if surname:
+            slug = re.sub(r"[^0-9A-Za-z]+", "-", surname).strip("-").lower()
+            if slug:
+                return slug
+        return str(self.index)
+
+    @property
+    def as_dict(self):
+        data = super().as_dict
+        data["node_suffix"] = self.node_suffix
+        if getattr(self, "surname", None):
+            data["surname"] = self.surname
+        return data
 
     @property
     def config_folder(self):

@@ -39,14 +39,30 @@ and every generated service automatically references all declared networks.
 
 The TOML params file can express the YAML tags used by the generated
 configuration (for example `!AutoFunding`, `!AutoRedeeming`, or
-`!ClosureFinalizer`) by providing a `tag` key along with the relevant fields:
+`!ClosureFinalizer`) by embedding the tag in the array-of-table header:
 
 ```toml
-[[config.hopr.strategy.strategies]]
-tag = "AutoFunding"
+[[config.hopr.strategy.strategies.AutoFunding]]
 funding_amount = "500 xDAI"
 min_stake_threshold = "100 HOPR"
 ```
 
 The tool converts those entries into the appropriate YAML objects before
 rendering the final `.cfg.yaml` files, so the output format remains unchanged.
+
+### Naming nodes with surnames
+
+Each entry in the `[[nodes]]` section can optionally declare a `surname` to
+differentiate nodes within the same params file:
+
+```toml
+[[nodes]]
+surname = "alpha"
+safe_address = "SAFE_ADDRESS_1"
+...
+```
+
+The surname is converted to a slug (letters, numbers, and dashes only) and used
+in every generated file path and docker-compose service name.  If no surname is
+provided the tool falls back to the numeric index, preserving the existing
+behavior.

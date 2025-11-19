@@ -25,6 +25,43 @@ logging.basicConfig(level=logging.DEBUG,
 logger = logging.getLogger("hoprd-config-generator")
 
 
+def _expand_tagged_sections(value):
+    """Convert TOML dotted tables into tag-aware dictionaries.
+
+    When the params TOML file expresses YAML tags via dotted array tables
+    (for example ``[[config.hopr.strategy.strategies.ClosureFinalizer]]``), the
+    parsed structure ends up as a mapping whose keys correspond to the class
+    names (``{"ClosureFinalizer": [{...}]}``).  The configuration generator
+    expects the previous ``{"tag": "ClosureFinalizer", ...}`` layout, so we
+    normalize those mappings back into a list of dictionaries that carry the
+    ``tag`` attribute.  Regular dictionaries are processed recursively without
+    modification.
+    """
+
+    if isinstance(value, dict):
+        normalized = {k: _expand_tagged_sections(v) for k, v in value.items()}
+
+        if normalized and all(key in YAML_TAG_MAP for key in normalized):
+            expanded = []
+            for tag_name, entries in normalized.items():
+                entries_list = entries if isinstance(entries, list) else [entries]
+                for entry in entries_list:
+                    if isinstance(entry, dict):
+                        payload = dict(entry)
+                    else:
+                        payload = {"value": entry}
+                    payload.setdefault("tag", tag_name)
+                    expanded.append(payload)
+            return expanded
+
+        return normalized
+
+    if isinstance(value, list):
+        return [_expand_tagged_sections(v) for v in value]
+
+    return value
+
+
 def _instantiate_tagged_objects(value):
     if isinstance(value, dict):
         tag_name = value.get("tag")
@@ -80,6 +117,7 @@ def main(params_file: Path, base_folder: Path):
     with params_file.open("rb") as f:
         config_content: dict = toml_loader.load(f)
 
+    config_content = _expand_tagged_sections(config_content)
     config_content = _instantiate_tagged_objects(config_content)
 
     network = Network(config_content)

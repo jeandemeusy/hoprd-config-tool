@@ -6,6 +6,7 @@ network_port_base = 9190
 session_port_base = 10100
 
 [[nodes]]
+surname = "mainnet"
 safe_address = "SAFE_ADDRESS"
 module_address = "MODULE_ADDRESS"
 node_address = "NODE_ADDRESS"
@@ -17,8 +18,7 @@ identity = "IDENTITY_CONTENT"
 [config.hopr.protocol]
 outgoing_ticket_price = "200 HOPR"
 
-[[config.hopr.strategy.strategies]]
-tag = "ClosureFinalizer"
+[[config.hopr.strategy.strategies.ClosureFinalizer]]
 max_closure_overdue = 3600
 
 [env]

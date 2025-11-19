@@ -6,6 +6,7 @@ network_port_base = 9090
 session_port_base = 10000
 
 [[nodes]]
+surname = "alpha"
 safe_address = "SAFE_ADDRESS_1"
 module_address = "MODULE_ADDRESS_1"
 node_address = "NODE_ADDRESS_1"
@@ -15,6 +16,7 @@ identity_password = "ID_PASSWORD_1"
 identity = "IDENTITY_CONTENT_1"
 
 [[nodes]]
+surname = "beta"
 safe_address = "SAFE_ADDRESS_2"
 module_address = "MODULE_ADDRESS_2"
 node_address = "NODE_ADDRESS_2"
@@ -26,17 +28,18 @@ identity = "IDENTITY_CONTENT_2"
 [config.hopr.protocol]
 outgoing_ticket_price = "100 HOPR"
 
-[[config.hopr.strategy.strategies]]
-tag = "AutoFunding"
+[[config.hopr.strategy.strategies.AutoFunding]]
 funding_amount = "500 xDAI"
 min_stake_threshold = "100 HOPR"
 
-[[config.hopr.strategy.strategies]]
-tag = "AutoRedeeming"
+[[config.hopr.strategy.strategies.AutoRedeeming]]
 redeem_only_aggregated = false
 redeem_all_on_close = true
 minimum_redeem_ticket_value = "10 HOPR"
 redeem_on_winning = true
+
+[[config.hopr.strategy.strategies.ClosureFinalizer]]
+max_closure_overdue = 3600
 
 [env]
 RUST_LOG = "info"
