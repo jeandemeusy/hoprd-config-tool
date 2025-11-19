@@ -20,10 +20,13 @@ config:
       outgoing_ticket_price: "200 HOPR"
     strategy:
       strategies:
-        - !Aggregating
-          aggregation_threshold: 100
-          unrealized_balance_ratio: 0.95
-          aggregate_on_channel_close: true
+        - !ClosureFinalizer
+          max_closure_overdue: 3600
           
 env:
   RUST_LOG: info, debug
+
+networks:
+  default:
+    name: hoprd-network2
+    driver: bridge

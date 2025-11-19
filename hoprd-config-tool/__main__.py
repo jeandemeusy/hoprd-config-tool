@@ -1,6 +1,7 @@
 import logging
 import subprocess
 from pathlib import Path
+from textwrap import indent
 
 import click
 import yaml
@@ -35,6 +36,14 @@ def main(params_file: str, base_folder: Path):
         config_content: dict = yaml.safe_load(f)
 
     network = Network(config_content)
+    compose_networks = getattr(network, "networks", None) or {}
+    formatted_networks = ""
+    network_names: list[str] = []
+    if compose_networks:
+        formatted_networks = indent(
+            yaml.safe_dump(compose_networks, sort_keys=False), "  "
+        )
+        network_names = list(compose_networks.keys())
                 
     logger.info(f"Loaded {len(network.nodes)} nodes for '{network.meta.name}' network")
 
@@ -77,7 +86,10 @@ def main(params_file: str, base_folder: Path):
                 services=[p.as_dict for p in nodes_params],
                 version=network.meta.version,
                 network=network.meta.name,
-                envvars=config_content.get("env", {})
+                envvars=config_content.get("env", {}),
+                networks=compose_networks,
+                networks_yaml=formatted_networks,
+                network_names=network_names,
             )
         )
         logger.info(f"Docker compose file at '{output}'")

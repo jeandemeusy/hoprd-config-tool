@@ -23,6 +23,12 @@ x-settings: &settings
     options:
       max-size: 1000M
       max-file: "5"
+{% if network_names %}
+  networks:
+  {% for network_name in network_names %}
+    - {{ network_name }}
+  {% endfor %}
+{% endif %}
 
 x-envars: &envvars
   RUST_BACKTRACE: full
@@ -69,3 +75,8 @@ services:
 
   {% endif %}
   {% endfor %}
+
+{% if networks %}
+networks:
+{{ networks_yaml }}
+{% endif %}
