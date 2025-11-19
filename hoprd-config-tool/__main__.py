@@ -3,10 +3,12 @@ import subprocess
 from pathlib import Path
 
 import click
+
 try:
     import tomllib as toml_loader
 except ModuleNotFoundError:  # pragma: no cover - Python < 3.11
     import tomli as toml_loader
+
 import yaml
 
 from .config_filling import ConfigFilling

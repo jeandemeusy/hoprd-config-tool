@@ -9,7 +9,6 @@ session_port_base = 10100
 safe_address = "SAFE_ADDRESS"
 module_address = "MODULE_ADDRESS"
 node_address = "NODE_ADDRESS"
-node_peer_id = "NODE_PEER_ID"
 api_password = "API_PASSWORD"
 identity_password = "ID_PASSWORD"
 identity = "IDENTITY_CONTENT"
