@@ -8,7 +8,8 @@ class Network(BaseObject):
         "meta": "meta",
         "config": "config",
         "nodes": "nodes",
-        "slug": "nodes_slug"
+        "slug": "nodes_slug",
+        "networks": "networks",
     }
 
     def post_init(self):

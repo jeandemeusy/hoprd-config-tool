@@ -27,10 +27,24 @@ config:
       outgoing_ticket_price: "100 HOPR"
     strategy:
       strategies:
-        - !Aggregating
-          aggregation_threshold: 100
-          unrealized_balance_ratio: 0.95
-          aggregate_on_channel_close: true
+        - !AutoFunding
+          funding_amount: "500 xDAI"
+          min_stake_threshold: "100 HOPR"
+        - !AutoRedeeming
+          redeem_only_aggregated: false
+          redeem_all_on_close: true
+          minimum_redeem_ticket_value: "10 HOPR"
+          redeem_on_winning: true
           
 env:
   RUST_LOG: info
+
+networks:
+  default:
+    name: hoprd-network1
+    external: true
+  metrics:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.40.0.0/24
