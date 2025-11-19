@@ -50,7 +50,7 @@ class NodeParams(BaseObject):
 
     @property
     def config_file(self):
-        return self.config_folder.joinpath(f"{self.filename}.cfg.yaml")
+        return self.config_folder.joinpath(f"{self.filename}.cfg.toml")
 
     @property
     def id_file(self):

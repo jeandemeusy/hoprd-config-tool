@@ -9,7 +9,7 @@ packages = ["/hoprd-config-tool"]
 name = "hoprd-config-tool"
 dynamic = ["version"]
 requires-python = ">=3.9"
-dependencies = ["pyYAML", "Jinja2", "click"]
+dependencies = ["pyYAML", "Jinja2", "click", "tomli", "tomli-w"]
 readme = {file = "README.md", content-type = "text/markdown" }
 authors = [{name = "Jean Demeusy", email = "jean.demeusy@hoprnet.org"}]
 maintainers = [{name = "Jean Demeusy", email = "jean.demeusy@hoprnet.org"}]
