@@ -150,10 +150,6 @@ def main(params_file: str, base_folder: Path):
         multi_nodes = []
         for obj in nodes_params:
             node_entry = {
-                "index": obj.index,
-                "filename": obj.filename,
-                "config_file": str(obj.config_file),
-                "identity_file": str(obj.id_file),
                 "safe_address": obj.safe_address,
                 "module_address": obj.module_address,
                 "node_address": obj.node_address,
@@ -164,7 +160,8 @@ def main(params_file: str, base_folder: Path):
             }
             multi_nodes.append(_prune_nones(_to_builtin(node_entry)))
 
-        multi_config = {"shared": shared_config, "nodes": multi_nodes}
+        multi_config = shared_config
+        multi_config["nodes"] = multi_nodes
         multi_config_file = nodes_params[0].config_folder.joinpath(
             f"hoprd-{network.meta.name}-multi.cfg.toml"
         )
