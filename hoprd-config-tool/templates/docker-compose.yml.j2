@@ -46,7 +46,7 @@ services:
       HOPRD_API_PORT: {{ service.api_port }}
       <<: *envvars
     volumes:
-      - {{ service.folder }}/.hopr-configs/{{ network }}/hoprd-{{ network }}-{{ service.index }}.cfg.toml:/app/hoprd.cfg.yaml
+      - {{ service.folder }}/.hopr-configs/{{ network }}/hoprd-{{ network }}-{{ service.index }}.cfg.yaml:/app/hoprd.cfg.yaml
       - {{ service.folder }}/.hopr-ids/{{ network }}/hoprd-{{ network }}-{{ service.index }}.id:/app/hopr.id
       - hoprd-{{ network }}-{{ service.index }}:/app/hoprd-db
     ports:

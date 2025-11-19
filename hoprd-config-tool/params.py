@@ -11,8 +11,6 @@ class NodeParams(BaseObject):
         "session_port": "session_port",
         "module_address": "module_address",
         "safe_address": "safe_address",
-        "node_address": "node_address",
-        "node_peer_id": "node_peer_id",
         "identity": "identity",
         "identity_password": "identity_password",
         "folder": "folder"
@@ -52,7 +50,7 @@ class NodeParams(BaseObject):
 
     @property
     def config_file(self):
-        return self.config_folder.joinpath(f"{self.filename}.cfg.toml")
+        return self.config_folder.joinpath(f"{self.filename}.cfg.yaml")
 
     @property
     def id_file(self):

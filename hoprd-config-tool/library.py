@@ -3,11 +3,6 @@ from copy import deepcopy
 from pathlib import Path
 from typing import Any
 
-try:  # Python >=3.11
-    import tomllib  # type: ignore[attr-defined]
-except ModuleNotFoundError:  # pragma: no cover - fallback for Python <3.11
-    import tomli as tomllib  # type: ignore[assignment]
-
 import yaml
 from jinja2 import Template
 
@@ -43,10 +38,6 @@ def get_template(filename: Path, template_folder: str = "templates"):
         with open(template_path, "r") as f:
             return yaml.safe_load(f)
 
-    if filename.suffix in [".toml"]:
-        with open(template_path, "rb") as f:
-            return tomllib.load(f)
-
     elif filename.suffix in [".j2"]:
         with open(template_path, "r") as f:
             return Template(f.read(), trim_blocks=True, lstrip_blocks=True)
@@ -70,6 +61,12 @@ def set_nested_value(d, keys, value):
     for key in keys[:-1]:
         d = d.setdefault(key, {})
     d[keys[-1]] = value
+
+
+def set_nested_attr(d, keys, attr, value):
+    for key in keys:
+        d = d.setdefault(key, {})
+    setattr(d, attr, value)
 
 
 def get_nested_value(d, keys):
