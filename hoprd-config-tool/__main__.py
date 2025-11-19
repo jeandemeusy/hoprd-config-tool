@@ -1,12 +1,12 @@
 import logging
 import subprocess
 from pathlib import Path
-from textwrap import indent
 
 import click
 import yaml
 
 from .config_filling import ConfigFilling
+from .docker_compose import DockerComposeGenerator
 from .library import get_template, replace_fields
 from .network import Network
 from .params import NodeParams
@@ -36,15 +36,6 @@ def main(params_file: str, base_folder: Path):
         config_content: dict = yaml.safe_load(f)
 
     network = Network(config_content)
-    compose_networks = getattr(network, "networks", None) or {}
-    formatted_networks = ""
-    network_names: list[str] = []
-    if compose_networks:
-        formatted_networks = indent(
-            yaml.safe_dump(compose_networks, sort_keys=False), "  "
-        )
-        network_names = list(compose_networks.keys())
-                
     logger.info(f"Loaded {len(network.nodes)} nodes for '{network.meta.name}' network")
 
     # Create list of nodes
@@ -79,20 +70,12 @@ def main(params_file: str, base_folder: Path):
 
     # Generate docker compose file
     logger.info("Generating docker-compose file")
-    output = Path(f"./docker-compose.{network.meta.name}.yml")
-    with open(output, "w") as f:
-        f.write(
-            get_template(Path("docker-compose.yml.j2")).render(
-                services=[p.as_dict for p in nodes_params],
-                version=network.meta.version,
-                network=network.meta.name,
-                envvars=config_content.get("env", {}),
-                networks=compose_networks,
-                networks_yaml=formatted_networks,
-                network_names=network_names,
-            )
-        )
-        logger.info(f"Docker compose file at '{output}'")
+    compose_output = Path(f"./docker-compose.{network.meta.name}.yml")
+    compose_generator = DockerComposeGenerator()
+    compose_generator.write(
+        compose_output, network=network, nodes=nodes_params, config_content=config_content
+    )
+    logger.info(f"Docker compose file at '{compose_output}'")
 
 
 if __name__ == "__main__":
