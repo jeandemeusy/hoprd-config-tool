@@ -5,8 +5,7 @@ api_port_base = 3000
 network_port_base = 9090
 session_port_base = 10000
 
-[[nodes]]
-surname = "alpha"
+[[nodes.alpha]]
 safe_address = "SAFE_ADDRESS_1"
 module_address = "MODULE_ADDRESS_1"
 node_address = "NODE_ADDRESS_1"
@@ -15,8 +14,7 @@ api_password = "API_PASSWORD_1"
 identity_password = "ID_PASSWORD_1"
 identity = "IDENTITY_CONTENT_1"
 
-[[nodes]]
-surname = "beta"
+[[nodes.beta]]
 safe_address = "SAFE_ADDRESS_2"
 module_address = "MODULE_ADDRESS_2"
 node_address = "NODE_ADDRESS_2"

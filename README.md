@@ -52,17 +52,18 @@ rendering the final `.cfg.yaml` files, so the output format remains unchanged.
 
 ### Naming nodes with surnames
 
-Each entry in the `[[nodes]]` section can optionally declare a `surname` to
-differentiate nodes within the same params file:
+Each entry in the `[[nodes]]` section can optionally embed the node's
+`surname` directly into the table header to differentiate nodes within the same
+params file:
 
 ```toml
-[[nodes]]
-surname = "alpha"
+[[nodes.alpha]]
 safe_address = "SAFE_ADDRESS_1"
 ...
 ```
 
-The surname is converted to a slug (letters, numbers, and dashes only) and used
-in every generated file path and docker-compose service name.  If no surname is
-provided the tool falls back to the numeric index, preserving the existing
+The surname in the header is converted to a slug (letters, numbers, and dashes
+only) and used in every generated file path and docker-compose service name.
+If a node omits the surname (for example by sticking with a plain `[[nodes]]`
+entry) the tool falls back to the numeric index, preserving the existing
 behavior.

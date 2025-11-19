@@ -62,6 +62,35 @@ def _expand_tagged_sections(value):
     return value
 
 
+def _normalize_nodes_section(config_content):
+    """Allow ``[[nodes.<surname>]]`` tables to define per-node entries."""
+
+    nodes = config_content.get("nodes")
+    if isinstance(nodes, dict):
+        normalized_nodes = []
+        for surname, entries in nodes.items():
+            if isinstance(entries, list):
+                entries_list = entries
+            else:
+                entries_list = [entries]
+
+            for entry in entries_list:
+                if not isinstance(entry, dict):
+                    raise TypeError(
+                        "Node definitions must be tables; "
+                        f"got {type(entry).__name__} for '{surname}'"
+                    )
+
+                payload = dict(entry)
+                if surname not in (None, ""):
+                    payload.setdefault("surname", surname)
+                normalized_nodes.append(payload)
+
+        config_content["nodes"] = normalized_nodes
+
+    return config_content
+
+
 def _instantiate_tagged_objects(value):
     if isinstance(value, dict):
         tag_name = value.get("tag")
@@ -119,6 +148,7 @@ def main(params_file: Path, base_folder: Path):
 
     config_content = _expand_tagged_sections(config_content)
     config_content = _instantiate_tagged_objects(config_content)
+    config_content = _normalize_nodes_section(config_content)
 
     network = Network(config_content)
     logger.info(f"Loaded {len(network.nodes)} nodes for '{network.meta.name}' network")
