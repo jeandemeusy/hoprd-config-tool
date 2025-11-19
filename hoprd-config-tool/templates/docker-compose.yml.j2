@@ -2,7 +2,7 @@ name: {{ network }}
 
 volumes:
   {% for service in services %}
-  hoprd-{{ network }}-{{ service.index }}:
+  hoprd-{{ network }}-{{ service.node_suffix }}:
   {% endfor %}
 
 x-settings: &settings
@@ -39,16 +39,16 @@ x-envars: &envvars
 
 services:
   {% for service in services %}
-  hoprd-{{ network }}-{{ service.index }}:
+  hoprd-{{ network }}-{{ service.node_suffix }}:
     <<: *settings
-    container_name: hoprd-{{ network }}-{{ service.index }}
+    container_name: hoprd-{{ network }}-{{ service.node_suffix }}
     environment:
       HOPRD_API_PORT: {{ service.api_port }}
       <<: *envvars
     volumes:
-      - {{ service.folder }}/.hopr-configs/{{ network }}/hoprd-{{ network }}-{{ service.index }}.cfg.yaml:/app/hoprd.cfg.yaml
-      - {{ service.folder }}/.hopr-ids/{{ network }}/hoprd-{{ network }}-{{ service.index }}.id:/app/hopr.id
-      - hoprd-{{ network }}-{{ service.index }}:/app/hoprd-db
+      - {{ service.folder }}/.hopr-configs/{{ network }}/hoprd-{{ network }}-{{ service.node_suffix }}.cfg.yaml:/app/hoprd.cfg.yaml
+      - {{ service.folder }}/.hopr-ids/{{ network }}/hoprd-{{ network }}-{{ service.node_suffix }}.id:/app/hopr.id
+      - hoprd-{{ network }}-{{ service.node_suffix }}:/app/hoprd-db
     ports:
       - {{ service.session_port }}:{{ service.session_port }}/tcp
       - {{ service.session_port }}:{{ service.session_port }}/udp
@@ -59,23 +59,22 @@ services:
   {% endfor %}
   {% for service in services %}
   {% if service.network.slug != none %}
-  metricspusher-{{ network }}-{{ service.index }}:
+  metricspusher-{{ network }}-{{ service.node_suffix }}:
     image: curlimages/curl:latest
     command: /bin/sh /app/metricspusher.sh
     volumes:
       - ./metricspusher.sh:/app/metricspusher.sh
-    network_mode: service:hoprd-{{ network }}-{{ service.index }}
-    container_name: metricspusher-{{ network }}-{{ service.index }}
+    network_mode: service:hoprd-{{ network }}-{{ service.node_suffix }}
+    container_name: metricspusher-{{ network }}-{{ service.node_suffix }}
     environment:
       HOPRD_API_TOKEN: {{ service.api_password }}
-      HOPRD_NODE_NAME: hoprd-{{ network }}-{{ service.index }}
-      HOPRD_JOB_NAME: {{ service.network.slug }}{{ service.index }}
+      HOPRD_NODE_NAME: hoprd-{{ network }}-{{ service.node_suffix }}
+      HOPRD_JOB_NAME: {{ service.network.slug }}{{ service.node_suffix }}
       HOPRD_API_PORT: {{ service.api_port }}
       HOPRD_NETWORK: {{ network }}
 
   {% endif %}
   {% endfor %}
-
 {% if networks %}
 networks:
 {{ networks_yaml }}
