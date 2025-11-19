@@ -11,6 +11,8 @@ class ConfigFilling:
         "hopr/host/port": "network_port",
         "hopr/safe_module/module_address": "module_address",
         "hopr/safe_module/safe_address": "safe_address",
+        "hopr/node/address": "node_address",
+        "hopr/node/peer_id": "node_peer_id",
         "identity/password": "identity_password",
         "hopr/host/address": "*ip_addr"
     }

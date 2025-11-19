@@ -11,6 +11,8 @@ class NodeParams(BaseObject):
         "session_port": "session_port",
         "module_address": "module_address",
         "safe_address": "safe_address",
+        "node_address": "node_address",
+        "node_peer_id": "node_peer_id",
         "identity": "identity",
         "identity_password": "identity_password",
         "folder": "folder"

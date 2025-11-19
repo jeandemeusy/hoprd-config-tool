@@ -18,6 +18,15 @@ logging.basicConfig(level=logging.DEBUG,
                     format="%(levelname)-8s:%(message)s", datefmt="[%X]")
 logger = logging.getLogger("hoprd-config-generator")
 
+NODE_SPECIFIC_PATHS = (
+    ("hopr", "safe_module", "safe_address"),
+    ("hopr", "safe_module", "module_address"),
+    ("hopr", "node", "address"),
+    ("hopr", "node", "peer_id"),
+    ("api", "auth", "token"),
+    ("identity", "password"),
+)
+
 
 def _to_builtin(value):
     if isinstance(value, YAMLParser):
@@ -40,6 +49,27 @@ def _prune_nones(value):
         return [_prune_nones(v) for v in value if v is not None]
 
     return value
+
+
+def _remove_path(data: dict, path: tuple[str, ...]):
+    current = data
+    parents: list[tuple[dict, str]] = []
+    for key in path[:-1]:
+        next_value = current.get(key)
+        if not isinstance(next_value, dict):
+            return
+        parents.append((current, key))
+        current = next_value
+
+    if isinstance(current, dict):
+        current.pop(path[-1], None)
+
+    for parent, key in reversed(parents):
+        child = parent.get(key)
+        if isinstance(child, dict) and not child:
+            parent.pop(key, None)
+        else:
+            break
 
 
 @click.command()
@@ -107,6 +137,40 @@ def main(params_file: str, base_folder: Path):
         compose_output, network=network, nodes=nodes_params, config_content=config_content
     )
     logger.info(f"Docker compose file at '{compose_output}'")
+
+    # Generate shared multi-node config file
+    if nodes_params:
+        logger.info("Rendering shared multi-node config file")
+        shared_config = replace_fields(node_template, network.config)
+        shared_config = ConfigFilling.apply(shared_config, nodes_params[0], ip_addr=ip_addr)
+        for path in NODE_SPECIFIC_PATHS:
+            _remove_path(shared_config, path)
+        shared_config = _prune_nones(_to_builtin(shared_config))
+
+        multi_nodes = []
+        for obj in nodes_params:
+            node_entry = {
+                "index": obj.index,
+                "filename": obj.filename,
+                "config_file": str(obj.config_file),
+                "identity_file": str(obj.id_file),
+                "safe_address": obj.safe_address,
+                "module_address": obj.module_address,
+                "node_address": obj.node_address,
+                "node_peer_id": obj.node_peer_id,
+                "api_password": obj.api_password,
+                "identity_password": obj.identity_password,
+                "identity": obj.identity,
+            }
+            multi_nodes.append(_prune_nones(_to_builtin(node_entry)))
+
+        multi_config = {"shared": shared_config, "nodes": multi_nodes}
+        multi_config_file = nodes_params[0].config_folder.joinpath(
+            f"hoprd-{network.meta.name}-multi.cfg.toml"
+        )
+        with open(multi_config_file, "wb") as f:
+            tomli_w.dump(multi_config, f)
+        logger.info(f"Multi-node config file at '{multi_config_file}'")
 
 
 if __name__ == "__main__":

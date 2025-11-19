@@ -21,6 +21,15 @@ Each node configuration is rendered as a TOML file (`hoprd-<network>-<index>.cfg
 which keeps related settings grouped with native table support.
 The generated docker compose file follows the default naming: `docker-compose.yml`
 
+In addition to the per-node files (which are the ones mounted by docker-compose),
+the tool now writes a `hoprd-<network>-multi.cfg.toml` document inside the same
+`.hopr-configs/<network>` folder. This companion file is useful when you want to
+track every node configuration in a single place: it contains a `[shared]`
+section with all the parameters that are identical across nodes and a `[[nodes]]`
+array where the per-node overrides live (`safe_address`, `module_address`,
+`node_address`, `node_peer_id`, `api_password`, `identity_password`, and
+`identity`).
+
 ### Custom Docker networks
 
 If you need the generated compose file to reference custom networks (for example

@@ -22,6 +22,10 @@ safe_transaction_service_provider = "https://safe-transaction.prod.hoprtech.net/
 safe_address = ""
 module_address = ""
 
+[hopr.node]
+address = ""
+peer_id = ""
+
 [identity]
 file = "/app/hopr.id"
 password = ""
