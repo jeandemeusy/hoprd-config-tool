@@ -8,7 +8,6 @@ class NodeParams(BaseObject):
         "index": "index",
         "network": "network",
         "api_password": "api_password",
-        "api_port": "api_port",
         "network_port": "network_port",
         "session_port": "session_port",
         "module_address": "module_address",
@@ -22,10 +21,6 @@ class NodeParams(BaseObject):
     @property
     def network_name(self):
         return self.network.meta.name
-
-    @property
-    def api_port(self):
-        return self.network.meta.api_port_base + self.index
 
     @property
     def network_port(self):

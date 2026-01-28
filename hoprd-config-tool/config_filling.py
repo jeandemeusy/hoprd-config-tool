@@ -6,7 +6,6 @@ from .library import get_nested_value, set_nested_attr, set_nested_value
 class ConfigFilling:
     keys = {
         "api/auth.token": "api_password",
-        "api/host/port": "api_port",
         "hopr/chain/network": "network/meta/name",
         "hopr/host/port": "network_port",
         "hopr/safe_module/module_address": "module_address",

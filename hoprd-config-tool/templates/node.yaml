@@ -1,28 +1,31 @@
-hopr:
-  host:
-    address: !IPv4
-    port: null
-  db:
-    data: /app/hoprd-db
-    initialize: true
-    force_initialize: false
-  strategy:
-    on_fail_continue: true
-    allow_recursive: true
-    strategies: null
-  chain:
-    provider: https://gnosis-rpc.publicnode.com
-    network: null
-  safe_module:
-    safe_transaction_service_provider: https://safe-transaction.prod.hoprtech.net/
-    safe_address: null
-    module_address: null
 identity:
   file: /app/hopr.id
   password: 
+  
+db:
+  data: /app/hoprd-db
+  initialize: true
+  force_initialize: false
+
 api:
   enable: true
   auth: !Token
   host:
     address: !IPv4 '0.0.0.0'
+    port: 3001
+
+strategy:
+  on_fail_continue: true
+  allow_recursive: true
+  strategies: null
+
+hopr:
+  host:
+    address: !IPv4
     port: null
+
+  safe_module:
+    safe_address: null
+    module_address: null
+
+blokli_url: null
