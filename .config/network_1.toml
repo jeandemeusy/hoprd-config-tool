@@ -1,9 +1,9 @@
 [meta]
 version = "1.0.0"
 name = "network1"
-api_port_base = 3000
 network_port_base = 9090
 session_port_base = 10000
+blokli_url = "https://blokli.hoprnet.org"
 
 [[nodes.alpha]]
 safe_address = "SAFE_ADDRESS_1"
@@ -21,9 +21,6 @@ api_password = "API_PASSWORD_2"
 identity_password = "ID_PASSWORD_2"
 identity = "IDENTITY_CONTENT_2"
 
-[config.hopr.protocol]
-outgoing_ticket_price = "100 HOPR"
-
 [[config.hopr.strategy.strategies.AutoFunding]]
 funding_amount = "500 xDAI"
 min_stake_threshold = "100 HOPR"
@@ -35,7 +32,7 @@ minimum_redeem_ticket_value = "10 HOPR"
 redeem_on_winning = true
 
 [[config.hopr.strategy.strategies.ClosureFinalizer]]
-max_closure_overdue = 3600
+max_closure_overdue = "60m"
 
 [env]
 RUST_LOG = "info"

@@ -8,4 +8,5 @@ class Meta(BaseObject):
         "api_port_base": "api_port_base",
         "network_port_base": "network_port_base",
         "session_port_base": "session_port_base",
+        "blokli_url": "blokli_url",
     }

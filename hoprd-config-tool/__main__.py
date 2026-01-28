@@ -161,7 +161,8 @@ def main(params_file: Path, base_folder: Path):
         params = {
             "index": index,
             "network": network,
-            "folder": base_folder
+            "folder": base_folder,
+            "blokli_url": network.meta.blokli_url,
         }
         node_param = NodeParams(params | node.as_dict)
         nodes_params.append(node_param)
