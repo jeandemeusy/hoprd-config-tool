@@ -16,6 +16,7 @@ class NodeParams(BaseObject):
         "identity_password": "identity_password",
         "folder": "folder",
         "surname": "surname",
+        "blokli_url": "blokli_url",
     }
 
     @property

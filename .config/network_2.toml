@@ -3,6 +3,7 @@ version = "2.0.0"
 name = "network2"
 network_port_base = 9190
 session_port_base = 10100
+blokli_url = "https://blokli.hoprnet.org"
 
 [[nodes.mainnet]]
 safe_address = "SAFE_ADDRESS"
@@ -16,7 +17,7 @@ identity = "IDENTITY_CONTENT"
 outgoing_ticket_price = "200 HOPR"
 
 [[config.hopr.strategy.strategies.ClosureFinalizer]]
-max_closure_overdue = 3600
+max_closure_overdue = "60m"
 
 [env]
 RUST_LOG = "info, debug"

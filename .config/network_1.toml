@@ -3,6 +3,7 @@ version = "1.0.0"
 name = "network1"
 network_port_base = 9090
 session_port_base = 10000
+blokli_url = "https://blokli.hoprnet.org"
 
 [[nodes.alpha]]
 safe_address = "SAFE_ADDRESS_1"
@@ -31,7 +32,7 @@ minimum_redeem_ticket_value = "10 HOPR"
 redeem_on_winning = true
 
 [[config.hopr.strategy.strategies.ClosureFinalizer]]
-max_closure_overdue = 3600
+max_closure_overdue = "60m"
 
 [env]
 RUST_LOG = "info"
